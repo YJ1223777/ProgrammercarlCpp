@@ -31,8 +31,19 @@ int main() {
 
 
     // 5.逆波兰表达式求值
-    cout << " " << endl;
+//    vector<string> tokens = {"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"};
+//    cout << myStackQueue->evalRPN(tokens) << endl;
 
+
+    // 6.滑动窗口最大值
+//    vector<int> nums = {1,3,-1,-3,5,3,6,7};
+//    vector<int> res = myStackQueue->maxSlidingWindow(nums,3);
+//    for (int i = 0; i < res.size(); ++i) {
+//        cout << res[i] << " ";
+//    }
+
+
+    // 7.前 K 个高频元素
 
     return 0;
 }

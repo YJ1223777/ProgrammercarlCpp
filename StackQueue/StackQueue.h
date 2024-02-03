@@ -6,6 +6,7 @@
 #define PROGRAMMERCARL_STACKQUEUE_H
 
 #include <iostream>
+#include <bits/stdc++.h>
 #include <algorithm>
 #include <unordered_set>
 #include <unordered_map>
@@ -17,6 +18,32 @@
 using namespace std;
 
 class MyStackQueue {
+private:
+    class MyMotonicQueue{
+    public:
+        deque<int> que;
+        // 每次弹出的时候，比较当前要弹出的数值是否等于队列出口元素的数值，如果相等则弹出。
+        // 同时pop之前判断队列当前是否为空。
+        void pop(int value) {
+            if (!que.empty() && value==que.front())
+                que.pop_front();
+        }
+
+        // 如果push的数值大于入口元素的数值，那么就将队列后端的数值弹出，直到push的数值小于等于队列入口元素的数值为止。
+        // 这样就保持了队列里的数值是单调从大到小的了。
+        void push(int value) {
+            while (!que.empty() && value > que.back())
+                que.pop_back();
+            que.push_back(value);
+        }
+
+        // 查询当前队列里的最大值 直接返回队列前端也就是front就可以了。
+        int front() {
+            return que.front();
+        }
+
+    };
+
 public:
 
     MyStackQueue()= default;
@@ -69,6 +96,62 @@ public:
         return res;
     }
 
+    /**
+     * 根据 逆波兰表示法，求表达式的值。
+     * 有效的运算符包括 + ,  - ,  * ,  / 。每个运算对象可以是整数，也可以是另一个逆波兰表达式
+     * @param tokens
+     * @return
+     */
+    int evalRPN(vector<string>& tokens) {
+        stack<long long> stack;
+        long long res=0;
+        for (int i = 0; i < tokens.size(); i++) {
+            if (tokens[i] == "+" || tokens[i] == "-" || tokens[i] == "*" || tokens[i] == "/") {
+                long long num1 = stack.top();
+                stack.pop();
+                long long num2 = stack.top();
+                stack.pop();
+                if (tokens[i] == "+"){
+                    res = num1 + num2;
+                }
+                if (tokens[i] == "-"){
+                    res = num2 - num1;
+                }
+                if (tokens[i] == "*"){
+                    res = num1 * num2;
+                }
+                if (tokens[i] == "/"){
+                    res = num2 / num1;
+                }
+                stack.push(res);
+            } else {
+                stack.push(stoll(tokens[i]));
+            }
+        }
+        res = stack.top();
+        return res;
+    }
+
+    /**
+     * 给定一个数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。滑动窗口每次只向右移动一位。
+     * @param nums
+     * @param k
+     * @return
+     */
+    vector<int> maxSlidingWindow(vector<int> &nums, int k) {
+        MyMotonicQueue que;
+        vector<int> res;
+        for (int i = 0; i < k; i++) {
+            que.push(nums[i]);
+        }
+        res.push_back(que.front());
+        for (int i = k; i < nums.size(); i++) {
+            que.pop(nums[i-k]);
+            que.push(nums[i]);
+            res.push_back(que.front());
+        }
+        return res;
+    }
 
 
 };
