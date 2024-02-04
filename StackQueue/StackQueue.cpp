@@ -43,6 +43,11 @@ int main() {
 //    }
 
     // 7.前 K 个高频元素
+//    vector<int> nums = {1,1,1,2,2,3};
+//    vector<int> res = myStackQueue->topKFrequent(nums,2);
+//    for (int i = 0; i < res.size(); ++i) {
+//        cout << res[i] << " ";
+//    }
 
     return 0;
 }

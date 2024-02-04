@@ -19,7 +19,8 @@ using namespace std;
 
 class MyStackQueue {
 private:
-    class MyMotonicQueue{
+    // 自定义单调队列
+    class MyMonotonicQueue{
     public:
         deque<int> que;
         // 每次弹出的时候，比较当前要弹出的数值是否等于队列出口元素的数值，如果相等则弹出。
@@ -45,6 +46,15 @@ private:
     };
 
 public:
+
+    // 自定义比较方式
+    // 根据本题中数字的频率排序
+    class myComparison{
+    public:
+        bool operator()(const pair<int, int>& lhs, const pair<int, int>& rhs) {
+            return lhs.second > rhs.second;
+        }
+    };
 
     MyStackQueue()= default;
 
@@ -139,7 +149,7 @@ public:
      * @return
      */
     vector<int> maxSlidingWindow(vector<int> &nums, int k) {
-        MyMotonicQueue que;
+        MyMonotonicQueue que;
         vector<int> res;
         for (int i = 0; i < k; i++) {
             que.push(nums[i]);
@@ -153,6 +163,37 @@ public:
         return res;
     }
 
+    /**
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int,int> map;
+        for (int i = 0; i < nums.size(); i++) {
+            map[nums[i]]++;
+        }
+
+        // 对频率排序
+        // 定义一个小顶堆，大小为k
+        priority_queue<pair<int,int>,vector<pair<int,int>>,myComparison> priQue;
+        // 用固定大小为k的小顶堆，扫面所有频率的数值
+        for (unordered_map<int,int>::iterator it = map.begin();it!=map.end();it++){
+            priQue.push(*it);
+            if (priQue.size() > k) {
+                priQue.pop();
+            }
+        }
+
+        // 找出前K个高频元素，因为小顶堆先弹出的是最小的，所以倒序来输出到数组
+        vector<int> res(k);
+        for (int i = k-1; i >= 0; i--) {
+            res[i] = priQue.top().first;
+            priQue.pop();
+        }
+        return res;
+    }
 
 };
 
