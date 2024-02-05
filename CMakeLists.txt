@@ -8,5 +8,6 @@ ADD_SUBDIRECTORY(Array)
 ADD_SUBDIRECTORY(HashTable)
 ADD_SUBDIRECTORY(String)
 ADD_SUBDIRECTORY(StackQueue)
+ADD_SUBDIRECTORY(BinaryTree)
 
 add_executable(Programmercarl main.cpp)
